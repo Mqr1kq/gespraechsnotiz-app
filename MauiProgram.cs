@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui.Markup;
 using Gespraechsnotiz_App.ViewModels;
 using Gespraechsnotiz_App.Views;
+using MauiIcons.Material;
 using Microsoft.Extensions.Logging;
 
 namespace Gespraechsnotiz_App
@@ -14,6 +15,7 @@ namespace Gespraechsnotiz_App
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkitMarkup()
+                .UseMaterialMauiIcons()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

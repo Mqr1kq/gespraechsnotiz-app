@@ -20,6 +20,13 @@ namespace Gespraechsnotiz_App.Models
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Description { get; set; }
-        public bool IsImportant { get; set; }
+        public Importance Importance { get; set; }
+    }
+
+    public enum Importance
+    {
+        Low,
+        Medium,
+        High
     }
 }
