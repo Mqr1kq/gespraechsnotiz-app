@@ -8,10 +8,13 @@ namespace Gespraechsnotiz_App
     public partial class AppShell : Shell
     {
         private readonly Label TitleLabel;
+        private View SettingsIcon;
         public AppShell()
         {
             Routing.RegisterRoute(nameof(NoteDetailPage), typeof(NoteDetailPage));
             Routing.RegisterRoute(nameof(NoteEditPage), typeof(NoteEditPage));
+            Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
+
             FlyoutBehavior = FlyoutBehavior.Disabled;
             Title = "Gesprächsnotiz-App";
 
@@ -19,14 +22,14 @@ namespace Gespraechsnotiz_App
 
             TitleLabel = new Label { Text = "Notizen", WidthRequest = UIStyles.PAGE_TITLE_LAYOUT_WIDTH }.Start().CenterVertical().Font(size: 20).Bold().TextColor(Colors.Black);
 
-            var settingsIcon = mainViewModel.CreateRoundedButtonWithClickEffect(
+            SettingsIcon = mainViewModel.CreateRoundedButtonWithClickEffect(
                 icon: MaterialIcons.Settings,
                 size: UIStyles.SIZE_BIG,
                 effectColor: Colors.LightGrey,
                 marginRight: UIStyles.COMMON_BUTTON_MARGINS,
                 marginLeft: UIStyles.COMMON_BUTTON_MARGINS,
                 action: () => OnOpenSettings());
-            settingsIcon.HorizontalOptions = LayoutOptions.End;
+            SettingsIcon.HorizontalOptions = LayoutOptions.End;
 
             var headerBar = new Grid
             {
@@ -39,7 +42,7 @@ namespace Gespraechsnotiz_App
             }.FillHorizontal();
 
             headerBar.Add(TitleLabel, 0, 0);
-            headerBar.Add(settingsIcon, 1, 0);
+            headerBar.Add(SettingsIcon, 1, 0);
 
             SetNavBarHasShadow(this, true);
             SetTitleView(this, headerBar);
@@ -62,13 +65,19 @@ namespace Gespraechsnotiz_App
                 ContentTemplate = new DataTemplate(() => new NoteEditPage()),
                 Route = nameof(NoteEditPage),
             });
+            Items.Add(new ShellContent
+            {
+                Title = "Einstellungen",
+                ContentTemplate = new DataTemplate(() => new SettingsPage(null)),
+                Route = nameof(SettingsPage),
+            });
 
             Navigated += OnNavigated!;
         }
 
         private void OnOpenSettings()
         {
-            Current.GoToAsync(nameof(NoteDetailPage));
+            Current.GoToAsync(nameof(SettingsPage));
         }
 
         private void OnNavigated(object sender, ShellNavigatedEventArgs e)
@@ -77,6 +86,11 @@ namespace Gespraechsnotiz_App
             if (currentPage != null)
             {
                 TitleLabel.Text = currentPage.Title; //updating title dynamically
+
+                if (currentPage.Title == "Einstellungen")
+                    SettingsIcon.IsVisible = false;
+                else
+                    SettingsIcon.IsVisible = true;
             }
         }
     }

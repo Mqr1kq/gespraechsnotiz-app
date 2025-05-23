@@ -57,7 +57,7 @@ namespace Gespraechsnotiz_App.Views
                         Children =
                         {
                             new Label { Text = listElement.Topic }.FontSize(size: UIStyles.SIZE_VERY_SMALL).Bold(),
-                            new Label { Text = listElement.CreatedAt.ToString(), LineBreakMode = LineBreakMode.CharacterWrap }.Font(size: UIStyles.SIZE_VERY_SMALL),
+                            new Label { Text = listElement.CreatedAt.ToString("dd.MM.yyyy HH:mm:ss"), LineBreakMode = LineBreakMode.CharacterWrap }.Font(size: UIStyles.SIZE_VERY_SMALL),
                             new Label { Text = listElement.PartnerName, LineBreakMode = LineBreakMode.CharacterWrap }.Font(size: UIStyles.SIZE_VERY_SMALL),
                             new Label { Text = listElement.Location, LineBreakMode = LineBreakMode.CharacterWrap }.Font(size: UIStyles.SIZE_VERY_SMALL),
                             new HorizontalStackLayout
@@ -70,13 +70,21 @@ namespace Gespraechsnotiz_App.Views
                                         WidthRequest = UIStyles.PRIORITY_BOXVIEW_WIDTH,
                                         CornerRadius = UIStyles.PRIORITY_BOXVIEW_CORNER_RADIUS,
                                         BackgroundColor = Colors.White
-                                    }.CenterHorizontal().CenterVertical().Margins(left: UIStyles.COMMON_MARGINS_MEDIUM)
+                                }.CenterHorizontal().CenterVertical().Margins(left: UIStyles.COMMON_MARGINS_MEDIUM).Assign(out BoxView importanceView),
+                                new Label { Text = listElement.Importance.ToString(), IsVisible = false }.Font(size: UIStyles.SIZE_VERY_SMALL).Margins(left: UIStyles.COMMON_MARGINS_VERY_SMALL).Assign(out Label tooltip)
                             },
                         }
                     }.Margins(left: UIStyles.COMMON_MARGINS_VERY_SMALL).Column(2).Row(0),
                     openDetailPageIcon.Column(3).Row(0)
                 }
             }.Paddings(top: UIStyles.COMMON_PADDINGS_SMALL, bottom: UIStyles.COMMON_PADDINGS_SMALL);
+
+            var tapGesture = new TapGestureRecognizer();
+            tapGesture.Tapped += (s, e) =>
+            {
+                tooltip.IsVisible = !tooltip.IsVisible;
+            };
+            importanceView.GestureRecognizers.Add(tapGesture);
 
             Content = new Frame
             {

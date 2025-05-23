@@ -26,11 +26,11 @@ namespace Gespraechsnotiz_App.ViewModels
         public string ImportanceLabel { get { return "Dringlichkeit"; } }
         public string SendNotePerMailButtonLabel { get { return "Sende Notiz Per Mail"; } }
         public string EditButtonLabel { get { return "Bearbeiten"; } }
-        //public Note Note { get; set; }
-
-        //public NoteDetailViewModel(Note note)
-        //{
-        //    Note = note;
-        //}
+        public string ErrorLabel { get { return "Fehler"; } }
+        public string EmailErrorDescription { get { return "Bitte eine gültige E-Mail-Adresse eingeben."; } }
+        public string OKLabel { get { return "OKLabel"; } }
+        public string SendButtonLabel { get { return "Senden"; } }
+        public string CancelButtonLabel { get { return "Abbrechen"; } }
+        public string EmailReceiverLabel { get { return "Empfänger-E-Mail-Adresse"; } }
     }
 }

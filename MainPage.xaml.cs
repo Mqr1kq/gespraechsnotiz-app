@@ -9,7 +9,7 @@ using System.Text.Json;
 
 namespace Gespraechsnotiz_App
 {
-    public partial class MainPage : ContentPage
+    public partial class MainPage : ContentPage, IQueryAttributable
     {
         private readonly MainViewModel vm = new();
         private VerticalStackLayout _outerVerticalStackLayout;
@@ -21,6 +21,8 @@ namespace Gespraechsnotiz_App
             Title = vm.Title;
             _notesList = LoadSavedElements();
             Content = BuildUI();
+
+            NoteEvents.NoteListChanged += OnNoteListChanged;
         }
 
         private View BuildUI()
@@ -42,7 +44,7 @@ namespace Gespraechsnotiz_App
                         new Label { Text = vm.CreateNewNoteLabel }.CenterVertical().CenterHorizontal().Font(size: UIStyles.SIZE_VERY_SMALL)
                     }.Assign(out HorizontalStackLayout createNoteLayout)
                 }
-            }.BackgroundColor(Colors.LightGray).Paddings(UIStyles.COMMON_PADDINGS_VERY_BIG, UIStyles.COMMON_PADDINGS_MEDIUM, UIStyles.COMMON_PADDINGS_VERY_BIG, UIStyles.COMMON_PADDINGS_VERY_BIG); ;
+            }.BackgroundColor(Colors.LightGray).Paddings(UIStyles.COMMON_PADDINGS_VERY_BIG, UIStyles.COMMON_PADDINGS_MEDIUM, UIStyles.COMMON_PADDINGS_VERY_BIG, UIStyles.COMMON_PADDINGS_VERY_BIG);
 
             _createNoteLayout = createNoteLayout;
             RefreshListDisplay();
@@ -125,18 +127,12 @@ namespace Gespraechsnotiz_App
             }
         }
 
-        private void OnCreateNote()
-        {
-            //var popup = new FilterPopup(_currentFilterCriteria);
-            //popup.FilterApplied += OnFilterApplied!;
-            //this.ShowPopup(popup);
-        }
+        private async void OnCreateNote() => await Shell.Current.GoToAsync(nameof(NoteEditPage));
 
         private void OnMessageDeleted(Note message)
         {
             _notesList.Remove(message);
             Preferences.Remove($"ListElement_{message.Id}");
-            Preferences.Remove($"Viewed_{message.Id}");
 
             var savedKeys = Preferences.Get("SavedListKeys", "");
             var keys = savedKeys.Split(',').Where(key => !string.IsNullOrWhiteSpace(key));
@@ -148,49 +144,19 @@ namespace Gespraechsnotiz_App
             RefreshListDisplay();
         }
 
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue("Reload", out var reloadValue) && reloadValue?.ToString() == "true")
+            {
+                _notesList = LoadSavedElements();
+                RefreshListDisplay();
+            }
+        }
 
-
-
-
-
-        //public MainPage()
-        //{
-        //    Title = "Notes";
-        //    var viewModel = new MainViewModel();
-        //    BindingContext = viewModel;
-
-        //    Content = new VerticalStackLayout
-        //    {
-        //        Children =
-        //        {
-        //            new Button
-        //            {
-        //                Text = "New Note",
-        //                Command = viewModel.AddNoteCommand
-        //            },
-        //            new CollectionView
-        //            {
-        //                ItemTemplate = new DataTemplate(() =>
-        //                {
-        //                    var title = new Label { FontAttributes = FontAttributes.Bold };
-        //                    title.SetBinding(Label.TextProperty, "Topic");
-
-        //                    var date = new Label { FontSize = 12 };
-        //                    date.SetBinding(Label.TextProperty, new Binding("CreatedAt", stringFormat: "{0:dd.MM.yyyy, HH:mm:ss}"));
-
-        //                    return new Frame
-        //                    {
-        //                        Content = new VerticalStackLayout
-        //                        {
-        //                            Children = { date, title }
-        //                        }
-        //                    };
-        //                }),
-        //                ItemsSource = viewModel.Notes
-        //            }
-        //        }
-        //    };
-        //}
+        private void OnNoteListChanged(object sender, EventArgs e)
+        {
+            _notesList = LoadSavedElements();
+            RefreshListDisplay();
+        }
     }
-
 }

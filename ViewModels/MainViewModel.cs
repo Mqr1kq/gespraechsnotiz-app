@@ -22,9 +22,9 @@ namespace Gespraechsnotiz_App.ViewModels
         {
             Color priorityColor = importance switch
             {
-                Importance.Low => Colors.Green,
-                Importance.Medium => Colors.Yellow,
-                Importance.High => Colors.Red,
+                Importance.Niedrig => Colors.Green,
+                Importance.Mittel => Colors.Orange,
+                Importance.Hoch => Colors.Red,
                 _ => Colors.Grey,
             };
 
@@ -71,33 +71,5 @@ namespace Gespraechsnotiz_App.ViewModels
 
             return frame;
         }
-
-
-
-
-        //public ObservableCollection<Note> Notes { get; set; } = new ObservableCollection<Note>();
-        //public ICommand AddNoteCommand { get; }
-
-        //public MainViewModel()
-        //{
-        //    AddNoteCommand = new Command(() =>
-        //    {
-        //        // Navigation zur NoteEditPage einbauen
-        //    });
-
-        //    // Beispieldaten
-        //    Notes.Add(new Note
-        //    {
-        //        Topic = "Meeting mit Kunde A",
-        //        Location = "BBS Meppen",
-        //        PartnerName = "Hannah Lamp",
-        //        PartnerCompany = "Firma GmbH",
-        //        PartnerRole = "Sekretärin",
-        //        Phone = "0123456789",
-        //        Email = "hl@gmail.com",
-        //        Description = "Kurze Notiz...",
-        //        IsImportant = true
-        //    });
-        //}
     }
 }

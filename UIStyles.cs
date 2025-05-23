@@ -11,6 +11,7 @@ namespace Gespraechsnotiz_App
         public static Color BackgroundLightGrey = Color.FromRgba("#f7f7f7");
         public static Color BackgroundDarkGrey = Color.FromRgba("#e3e3e3");
         public static Color Primary = Color.FromRgba("#0e91d8");
+        public static Color LightPrimary = Color.FromRgba("#93ccff");
         public static Color Red = Color.FromRgba("#ed1c24");
         public static Color CardColor = Colors.White;
 
@@ -24,6 +25,7 @@ namespace Gespraechsnotiz_App
         public static int SIZE_BIG = 22;
         public static int SIZE_VERY_BIG = 24;
 
+        public static int COMMON_PADDINGS_SMALLEST = 3;
         public static int COMMON_PADDINGS_VERY_SMALL = 5;
         public static int COMMON_PADDINGS_SMALL = 10;
         public static int COMMON_PADDINGS_MEDIUM = 20;

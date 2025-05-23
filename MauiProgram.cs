@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Markup;
+using Gespraechsnotiz_App.Services;
 using Gespraechsnotiz_App.ViewModels;
 using Gespraechsnotiz_App.Views;
 using MauiIcons.Material;
@@ -27,6 +28,9 @@ namespace Gespraechsnotiz_App
             builder.Services.AddTransient<NoteDetailPage>();
             builder.Services.AddTransient<NoteDetailViewModel>();
             builder.Services.AddTransient<NoteEditPage>();
+            builder.Services.AddSingleton<NoteSyncService>();
+            builder.Services.AddTransient<SettingsPage>();
+
 
 #if DEBUG
             builder.Logging.AddDebug();
